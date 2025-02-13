@@ -9,14 +9,16 @@
 
 <div class="container my-4">
   <h2>Edit Product</h2>
-  <form th:action="@{/product/edit/{productId}(productId=${product.productId})}" method="post">
+  <form th:action="@{/product/edit/{productId}(productId=${product.productId})}" th:object="${product}" method="post">
+
     <div class="form-group">
       <label for="name">Product Name</label>
-      <input type="text" class="form-control" id="name" name="productName" th:value="${product.productName}" required>
+      <input type="text" class="form-control" id="name" name="productName" th:field="*{productName}" required>
     </div>
     <div class="form-group">
       <label for="quantity">Quantity</label>
-      <input type="number" class="form-control" id="quantity" name="productQuantity" th:value="${product.productQuantity}" required>
+      <input type="number" class="form-control" id="quantity" th:field="*{productQuantity}" required>
+      <small class="text-danger" th:if="${#fields.hasErrors('*{productQuantity}')}"> <span th:errors="*{productQuantity}"></span> </small>
     </div>
     <button type="submit" class="btn btn-primary">Save Changes</button>
     <a href="/product/list" class="btn btn-secondary">Cancel</a>
