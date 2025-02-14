@@ -87,7 +87,7 @@ public class Product {
 ```
 
 ### 2. Output Data Encoding
-I implemented Output Data Encoding by using #strings.escapeXml() to ensure that error messages are properly escaped to prevent security vulnerabilities, particularly those related to injection attacks, like XSS attacks.
+I implemented Output Data Encoding by using `#strings.escapeXml()` to ensure that error messages are properly escaped to prevent security vulnerabilities, particularly those related to injection attacks, like XSS attacks.
 ```html
 <div class="form-group">
   <label for="nameInput">Name</label>
@@ -102,6 +102,30 @@ I implemented Output Data Encoding by using #strings.escapeXml() to ensure that 
 
 ---
 # Reflection 2: Unit Testing
+
+1. After writing the unit test, how do you feel? How many unit tests should be made in a class? How to make sure that our unit tests are enough to verify our program? It would be good if you learned about code coverage. Code coverage is a metric that can help you understand how much of your source is tested. If you have 100% code coverage, does that mean your code has no bugs or errors?
+   <br><br>
+   - After writing unit tests, I saw the code being tested behaves as expected in a variety of situations. The goal is to ensure that the code is robust, resistant to edge cases, and behaves correctly for common scenarios.
+      <br><br>
+   - The number of unit tests in a class depends on the complexity of the class and its responsibilities.
+   <br><br>
+   - To ensure unit tests effectively verify a program, cover all public methods, edge cases, and error handling scenarios while aiming for high code coverage. Use techniques like test-driven development (TDD) and mutation testing to assess test robustness. Analyze coverage reports to identify untested branches and add missing tests. A well-tested program reliably exercises all critical functions, ensuring failures provide clear debugging insights.
+   <br><br>
+   - 100% code coverage doesn't guarantee that your code is free of bugs or errors. Code coverage only ensures that all lines of code have been executed during testing, but it does verify that the code behaves correctly in all scenarios. Tests may still miss edge cases, logical errors, or unexpected interactions between components. Additionally, coverage metrics don't account for the quality or completeness of assertions, which means a test could execute code without actually validating its correctness. Therefore, reaching 100% coverage is helpful, but to guarantee reliability, it needs be paired with strong test and real-world validation.
+   <br><br>
+2. Suppose that after writing the CreateProductFunctionalTest.java along with the corresponding test case, you were asked to create another functional test suite that verifies the number of items in the product list. You decided to create a new Java class similar to the prior functional test suites with the same setup procedures and instance variables. What do you think about the cleanliness of the code of the new functional test suite? Will the new code reduce the code quality? Identify the potential clean code issues, explain the reasons, and suggest possible improvements to make the code cleaner!
+   <br><br>
+   - Creating a new functional test suite with similar setup procedures and instance variables as the existing CreateProductFunctionalTest.java could introduce redundancy, reduce code cleanliness, and make maintenance more difficult. Duplicating setup logic, such as initializing baseUrl and configuring WebDriver, across multiple test classes violates the DRY (Don't Repeat Yourself) principle, increasing the risk of inconsistencies if changes are required in the future. While the new test suite would follow a familiar structure, excessive duplication can clutter the codebase, making it harder to read, manage, and scale. Maintaining multiple test classes with nearly identical configurations can also reduce overall code clarity, making it more challenging to implement future modifications efficiently.
+   <br><br>
+   - Suggested Improvements:
+     1. Extract Common Setup into a Base Class
+     2. Encapsulate Web Element Interactions in Helper Methods
+     3. Use Constants for URLs and Element Identifiers
+     4. Improve Assertions for Better Debugging
+     5. Reduce Explicit Waits with Utility Methods
+
+
+
 
 
 
