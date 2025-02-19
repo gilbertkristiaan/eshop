@@ -128,7 +128,7 @@ I implemented Output Data Encoding by using `#strings.escapeXml()` to ensure tha
 
 1. List the code quality issue(s) that you fixed during the exercise and explain your strategy on fixing them.
    <br><br>
-    During the exercise, I fixed several code quality issues, including inconsistent code formatting, redundant variables, and inefficient loops. My strategy for fixing them involved using a linter to identify formatting inconsistencies, refactoring redundant code to improve readability, and optimizing loops to enhance performance. Additionally, I ensured that all functions followed best practices for modularity and maintainability.
+    During the exercise, I fixed several code quality issues, including removing unused imports . My strategy for fixing them involved using a linter to identify formatting inconsistencies, refactoring redundant code to improve readability, and optimizing loops to enhance performance. Additionally, I ensured that all functions followed best practices for modularity and maintainability.
     <br><br>
 2. Look at your CI/CD workflows (GitHub)/pipelines (GitLab). Do you think the current implementation has met the definition of Continuous Integration and Continuous Deployment? Explain the reasons (minimum 3 sentences)!
 
