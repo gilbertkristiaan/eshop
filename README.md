@@ -1,11 +1,9 @@
-## Name: Gilbert Kristian
-
-## Class: Adpro-A
-
-## Student Number: 2306274951
-
+## Name: Gilbert Kristian - Adpro-A - 2306274951
 ___
-# Reflection 1: Coding Standards and Secure Coding
+
+# Module 1 - Coding Standards and Secure Coding
+
+## Reflection 1: Coding Standards and Secure Coding
 You already implemented two new features using Spring Boot. Check again your source code and evaluate the coding standards that you have learned in this module. Write clean code principles and secure coding practices that have been applied to your code. If you find any mistake in your source code, please explain how to improve your code
 
 ---
@@ -124,8 +122,15 @@ I implemented Output Data Encoding by using `#strings.escapeXml()` to ensure tha
      4. Improve Assertions for Better Debugging
      5. Reduce Explicit Waits with Utility Methods
 
+# Module 2 - CI/CD & DevOps
 
+## Reflection
 
+1. List the code quality issue(s) that you fixed during the exercise and explain your strategy on fixing them.
+   <br><br>
+    During the exercise, I fixed several code quality issues, including inconsistent code formatting, redundant variables, and inefficient loops. My strategy for fixing them involved using a linter to identify formatting inconsistencies, refactoring redundant code to improve readability, and optimizing loops to enhance performance. Additionally, I ensured that all functions followed best practices for modularity and maintainability.
+    <br><br>
+2. Look at your CI/CD workflows (GitHub)/pipelines (GitLab). Do you think the current implementation has met the definition of Continuous Integration and Continuous Deployment? Explain the reasons (minimum 3 sentences)!
 
 
 
