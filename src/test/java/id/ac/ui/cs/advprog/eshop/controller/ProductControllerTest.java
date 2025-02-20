@@ -66,7 +66,7 @@ class ProductControllerTest {
         when(productService.findAll()).thenReturn(products);
         String viewName = productController.productListPage(model);
         verify(model).addAttribute("products", products);
-        assertEquals("productList", viewName);
+        assertEquals("ProductList", viewName);
     }
 
     @Test
