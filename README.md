@@ -1,7 +1,10 @@
-## Name: Gilbert Kristian - Adpro-A - 2306274951
+## Gilbert Kristian - Adpro A - 2306274951
 ___
 
-# Module 1 - Coding Standards and Secure Coding
+- [Module 1](Module-1)
+- [Module 2](Module-2)
+
+# Module-1
 
 ## Reflection 1: Coding Standards and Secure Coding
 You already implemented two new features using Spring Boot. Check again your source code and evaluate the coding standards that you have learned in this module. Write clean code principles and secure coding practices that have been applied to your code. If you find any mistake in your source code, please explain how to improve your code
@@ -122,15 +125,21 @@ I implemented Output Data Encoding by using `#strings.escapeXml()` to ensure tha
      4. Improve Assertions for Better Debugging
      5. Reduce Explicit Waits with Utility Methods
 
-# Module 2 - CI/CD & DevOps
+# Module-2
 
-## Reflection
+## Reflection: CI/CD and DevOps
 
 1. List the code quality issue(s) that you fixed during the exercise and explain your strategy on fixing them.
    <br><br>
-    During the exercise, I fixed several code quality issues, including removing unused imports . My strategy for fixing them involved using a linter to identify formatting inconsistencies, refactoring redundant code to improve readability, and optimizing loops to enhance performance. Additionally, I ensured that all functions followed best practices for modularity and maintainability.
-    <br><br>
+   During the exercise, I fixed several code quality issues, including removing unused imports and making all the function names without any snake case. My strategy involved using a static code analyzer to detect and remove unnecessary imports, which helped improve code readability and maintainability. Additionally, I standardized function naming by following the camelCase convention to ensure consistency across the codebase and I also reviewed the code for redundant and change the to improve the performance.    <br><br>
 2. Look at your CI/CD workflows (GitHub)/pipelines (GitLab). Do you think the current implementation has met the definition of Continuous Integration and Continuous Deployment? Explain the reasons (minimum 3 sentences)!
+   <br><br>
+   The current CI/CD implementation aligns with the definition of Continuous Integration (CI) and Continuous Deployment (CD). Through utilizing GitHub Actions for workflow automation inside .github/workflows, CI is effectively implemented as workflows are automatically triggered on each push or pull request to a branch. Continuous Deployment (CD) is achieved through Koyeb, which ensures that the project is automatically deployed whenever there is a push or pull request. Koyeb also integrates seamlessly with GitHub, enabling a smooth deployment process.
+
+
+
+
+
 
 
 
