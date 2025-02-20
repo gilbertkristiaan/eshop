@@ -136,7 +136,8 @@ I implemented Output Data Encoding by using `#strings.escapeXml()` to ensure tha
    <br><br>
    The current CI/CD implementation aligns with the definition of Continuous Integration (CI) and Continuous Deployment (CD). Through utilizing GitHub Actions for workflow automation inside .github/workflows, CI is effectively implemented as workflows are automatically triggered on each push or pull request to a branch. Continuous Deployment (CD) is achieved through Koyeb, which ensures that the project is automatically deployed whenever there is a push or pull request. Koyeb also integrates seamlessly with GitHub, enabling a smooth deployment process.
 
-
+## Code Coverage Screenshot
+![image](https://github.com/user-attachments/assets/cd39a79a-5149-49df-941c-b1f9c648ad27)
 
 
 
