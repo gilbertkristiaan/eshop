@@ -20,6 +20,6 @@ class MainControllerTest {
     @Test
     void testTheMainPage() {
         String viewName = mainController.mainPage();
-        assertEquals("homePage", viewName);
+        assertEquals("Homepage", viewName);
     }
 }
