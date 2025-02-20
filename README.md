@@ -1,8 +1,8 @@
 ## Gilbert Kristian - Adpro A - 2306274951
 ___
 
-- [Module 1](Module-1)
-- [Module 2](Module-2)
+- [Module 1](#Module-1)
+- [Module 2](#Module-2)
 
 # Module-1
 
