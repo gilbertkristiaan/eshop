@@ -14,8 +14,7 @@ public class CarServiceImpl implements CarService{
 
     @Override
     public Car create(Car car) {
-        carRepository.create(car);
-        return car;
+        return carRepository.create(car);
     }
 
     @Override
@@ -28,8 +27,7 @@ public class CarServiceImpl implements CarService{
 
     @Override
     public Car findById(String carId) {
-        Car car = carRepository.findById(carId);
-        return car;
+        return carRepository.findById(carId);
     }
 
     @Override

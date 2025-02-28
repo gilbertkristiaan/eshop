@@ -1,9 +1,10 @@
 ## Gilbert Kristian - Adpro A - 2306274951
-___
 
 - [Module 1](#Module-1)
 - [Module 2](#Module-2)
+- [Module 3](#Module-3)
 
+---
 # Module-1
 
 ## Reflection 1: Coding Standards and Secure Coding
@@ -139,8 +140,66 @@ I implemented Output Data Encoding by using `#strings.escapeXml()` to ensure tha
 ## Code Coverage Screenshot
 ![image](https://github.com/user-attachments/assets/cd39a79a-5149-49df-941c-b1f9c648ad27)
 
+# Module-3
 
+## Reflection : Maintainability & OO Principles
 
+1) Explain what principles you apply to your project!
+    <br>
+    ## **1) Single Responsibility Principle (SRP)**
+    I created three different classes for `Controller`. `HomePageController` has the responsibility to perform mapping with endpoints `/`, `ProductController` has the responsibility to perform mapping with endpoints `/product`, and `CarController` has the responsibility to perform mapping with endpoints `/car`. I also removed UUID generation from constructor in Product class and moved ID generation into the ProductRepository
 
+    ## **2) Open/Closed Principle (OCP)**
+    I've implemented `BaseRepository<T, ID>` as a generic interface for repository operations, ensuring that CarRepository and ProductRepository follow the Open/Closed Principle (OCP). This allows for easy extension of repository functionality without modifying existing code, promoting better maintainability and scalability.
 
+    ## **3) Liskov Substitution Principle (LSP)**
+    `CarController` was designed as a subclass of `ProductController`, despite having different responsibilities. This inheritance structure was problematic because `CarController` didn't truly extend the behavior of `ProductController`, making substitution unreliable. I removed the inheritance relationship and restructured `CarController` as an independent class in its own file, ensuring more clean separation of concerns and better application to object-oriented principles.
+
+    ## **4) Interface Segregation Principle (ISP)**
+    The service interfaces (ProductService, CarService) follow ISP well by providing specific methods for each entity. These classes operate independently without unnecessary dependencies and already implemented CRUD (Create, Read, Update, Delete).
+
+    ## **5) Dependency Inversion Principle (DIP)**
+    `CarController` has a direct dependency on CarServiceImpl, which is not ideal since CarController should rely on the CarService interface instead. So, I updated the data type of the `carServiceImpl` variable in `CarController` to CarService, ensuring better abstraction and flexibility.
+<br><br>
+2) Explain the advantages of applying SOLID principles to your project with examples.
+   <br><br>
+   1. **Improved Maintainability**:
+       - Each class has a single responsibility, making the code easier to understand and modify.
+       - Example: Changes in how cars are stored, only affect `CarRepository`, not `CarServiceImpl` or `CarController`.
+   
+   2. **Enhanced Testability**:
+       - Dependencies on interfaces can be easily mocked for unit testing.
+       - Example: `CarServiceImpl` can be tested with a mock `CarRepository` without needing real data storage.
+
+   3. **Easier Extension**:
+       - New functionality can be added without modifying existing code.
+       - Example: If a new entity, such as `Bike` is introduced, a corresponding `BikeRepository` can be created by implementing `BaseRepository<Bike, String>`, ensuring consistency without modifying `CarRepository` or `ProductRepository`.
+
+   4. **Better Code Organization**:
+       - Clear separation of concerns leads to more organized codebase.
+       - Example: Car-related functionality is separated from Product-related functionality.
+<br><br>
+3) Explain the disadvantages of not applying SOLID principles to your project with examples.
+   <br><br>
+   1. **Rigidity**:
+       - Without interfaces, modifying repository implementations would require changes across multiple classes.
+        - Example: If `CarRepository` and `ProductRepository` had no common interface, adding a new repository method would require changes in both classes separately, leading to code duplication and higher maintenance effort.
+
+   2. **Fragility**:
+       - Unstructured dependencies cause unexpected side effects when making changes.
+       - Example: In non-SOLID code, changing how `CarRepository` works could break `CarService` in unexpected ways
+
+   3. **Reduced Testability**:
+       - Hard dependencies on concrete classes make unit testing difficult.
+       - Example: Without `BaseRepository<T, ID>`, `CarServiceImpl` would require an actual `CarRepository` instance in tests, making unit testing slower and dependent on real data.
+
+   4. **Code Duplication**:
+       - Without proper abstractions, similar code may be duplicated.
+       - Example:  If repository interfaces are not used, CRUD operations in `CarRepository` and `ProductRepository` would need to be written separately, leading to redundant code.
+
+   5. **Maintenance Challenges**:
+       - Monolithic classes with multiple responsibilities are harder to understand and maintain
+       - Example:  If `CarRepository` also handled business logic, it would be harder to modify without breaking other parts of the application. By following SOLID principles, business logic remains in services, while repositories only handle data access.
+    
+    
 
