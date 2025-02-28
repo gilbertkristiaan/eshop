@@ -13,19 +13,22 @@
   <form th:action="@{/car/createCar}" th:object="${car}" method="post">
     <div class="form-group">
       <label for="nameInput">Name</label>
-      <input th:field="*{carName}" type="text" class="form-control mb-4 col-4" id="nameInput" placeholder="Enter car' name">
+      <input th:field="*{carName}" type="text" class="form-control mb-4 col-4" id="nameInput" placeholder="Enter car name">
+      <p th:if="${#fields.hasErrors('carName')}" th:errors="*{carName}" class="text-danger"></p>
     </div>
     <div class="form-group">
       <label for="colorInput">Color</label>
-      <input th:field="*{carColor}" type="text" class="form-control mb-4 col-4" id="colorInput" placeholder="Enter car' color">
+      <input th:field="*{carColor}" type="text" class="form-control mb-4 col-4" id="colorInput" placeholder="Enter car color">
+      <p th:if="${#fields.hasErrors('carColor')}" th:errors="*{carColor}" class="text-danger"></p>
     </div>
     <div class="form-group">
       <label for="quantityInput">Quantity</label>
-      <input th:field="*{carQuantity}" type="text" class="form-control mb-4 col-4" id="quantityInput" placeholder="Enter car' quantity">
+      <input th:field="*{carQuantity}" type="text" class="form-control mb-4 col-4" id="quantityInput" placeholder="Enter car quantity">
+      <p th:if="${#fields.hasErrors('carQuantity')}" th:errors="*{carQuantity}" class="text-danger"></p>
     </div>
-
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
