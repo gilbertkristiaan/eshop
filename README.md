@@ -195,11 +195,11 @@ I implemented Output Data Encoding by using `#strings.escapeXml()` to ensure tha
 
    4. **Code Duplication**:
        - Without proper abstractions, similar code may be duplicated.
-       - Example:  If repository interfaces are not used, CRUD operations in `CarRepository` and `ProductRepository` would need to be written separately, leading to redundant code.
+       - Example: If repository interfaces are not used, CRUD operations in `CarRepository` and `ProductRepository` would need to be written separately, leading to redundant code.
 
    5. **Maintenance Challenges**:
        - Monolithic classes with multiple responsibilities are harder to understand and maintain
-       - Example:  If `CarRepository` also handled business logic, it would be harder to modify without breaking other parts of the application. By following SOLID principles, business logic remains in services, while repositories only handle data access.
+       - Example: If `CarRepository` also handled business logic, it would be harder to modify without breaking other parts of the application. By following SOLID principles, business logic remains in services, while repositories only handle data access.
     
     
 
