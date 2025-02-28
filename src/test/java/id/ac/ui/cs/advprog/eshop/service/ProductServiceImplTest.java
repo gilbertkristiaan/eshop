@@ -85,20 +85,20 @@ class ProductServiceImplTest {
 
     @Test
     void testUpdateExistingProduct() {
-        when(productRepository.update(sampleProduct)).thenReturn(sampleProduct);
+        when(productRepository.update(sampleProduct.getProductId(), sampleProduct)).thenReturn(sampleProduct);
         Product updatedProduct = productService.update(sampleProduct.getProductId(), sampleProduct);
         assertNotNull(updatedProduct);
         assertEquals("My Product", updatedProduct.getProductName());
         assertEquals(10, updatedProduct.getProductQuantity());
-        verify(productRepository, times(1)).update(sampleProduct);
+        verify(productRepository, times(1)).update(sampleProduct.getProductId(), sampleProduct);
     }
 
     @Test
     void testUpdateNonExistentProduct() {
-        when(productRepository.update(sampleProduct)).thenReturn(null);
+        when(productRepository.update(sampleProduct.getProductId(), sampleProduct)).thenReturn(null);
         Product updatedProduct = productService.update(sampleProduct.getProductId(), sampleProduct);
         assertNull(updatedProduct);
-        verify(productRepository, times(1)).update(sampleProduct);
+        verify(productRepository, times(1)).update(sampleProduct.getProductId(), sampleProduct);
     }
 
     @Test
