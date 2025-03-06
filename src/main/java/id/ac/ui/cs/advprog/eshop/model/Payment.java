@@ -15,4 +15,6 @@ public class Payment {
     public Payment(String id, String method, Map<String, String> paymentData) {
     }
 
+    public Payment (String id, String method, Map <String, String> paymentData, String status) {
+    }
 }
