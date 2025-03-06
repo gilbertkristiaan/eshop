@@ -48,16 +48,4 @@ public class PaymentRepository {
         }
         return allPayments;
     }
-
-    public void update(Payment payment, String newStatus) {
-        Order order = this.getOrder(payment.getId());
-        payment.setStatus(newStatus);
-        if (newStatus.equals("SUCCESS")) {
-            order.setStatus("SUCCESS");
-        } else if (newStatus.equals("REJECTED")) {
-            order.setStatus("FAILED");
-        } else {
-            throw new IllegalArgumentException();
-        }
-    }
 }

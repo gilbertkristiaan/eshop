@@ -47,28 +47,6 @@ class PaymentRepositoryTest {
     }
 
     @Test
-    void testUpdatePaymentStatus() {
-        Payment payment = paymentList.get(0);
-        Payment savedPayment = paymentRepository.save(orderInstance, payment);
-        assertEquals(PaymentStatus.SUCCESS.getValue(), savedPayment.getStatus());
-        assertEquals(OrderStatus.SUCCESS.getValue(), orderInstance.getStatus());
-        paymentRepository.update(payment, PaymentStatus.REJECTED.getValue());
-        Payment updatedPayment = paymentRepository.findById(paymentList.get(0).getId());
-        Order updatedOrder = paymentRepository.getOrder(updatedPayment.getId());
-        assertEquals(PaymentStatus.REJECTED.getValue(), updatedPayment.getStatus());
-        assertEquals(OrderStatus.FAILED.getValue(), updatedOrder.getStatus());
-    }
-
-    @Test
-    void testInvalidStatusUpdate() {
-        Payment payment = paymentList.get(0);
-        paymentRepository.save(orderInstance, payment);
-        assertThrows(IllegalArgumentException.class, () -> {
-            paymentRepository.update(payment, "INVALID_STATUS");
-        });
-    }
-
-    @Test
     void testFindPaymentByIdIfExists() {
         for (Payment payment : paymentList) {
             paymentRepository.save(orderInstance, payment);

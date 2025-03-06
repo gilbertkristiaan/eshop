@@ -59,7 +59,7 @@ public class PaymentServiceImplTest {
         payments.add(payment1);
 
         paymentData2 = new HashMap<>();
-        paymentData2.put("voucherCode", "ESHOP1234ABC5679");F
+        paymentData2.put("voucherCode", "ESHOP1234ABC5679");
         Payment payment2 = new Payment("987f6543-21dc-ba98-7654-321fedcba987", "VOUCHER", paymentData2);
         payments.add(payment2);
     }
