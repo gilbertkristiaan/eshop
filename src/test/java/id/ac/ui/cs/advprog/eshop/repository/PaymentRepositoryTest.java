@@ -1,5 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.repository;
 
+import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.model.Order;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,13 +50,13 @@ class PaymentRepositoryTest {
     void testUpdatePaymentStatus() {
         Payment payment = paymentList.get(0);
         Payment savedPayment = paymentRepository.save(orderInstance, payment);
-        assertEquals("SUCCESS", savedPayment.getStatus());
-        assertEquals("SUCCESS", orderInstance.getStatus());
-        paymentRepository.update(payment, "REJECTED");
+        assertEquals(PaymentStatus.SUCCESS.getValue(), savedPayment.getStatus());
+        assertEquals(OrderStatus.SUCCESS.getValue(), orderInstance.getStatus());
+        paymentRepository.update(payment, PaymentStatus.REJECTED.getValue());
         Payment updatedPayment = paymentRepository.findById(paymentList.get(0).getId());
         Order updatedOrder = paymentRepository.getOrder(updatedPayment.getId());
-        assertEquals("REJECTED", updatedPayment.getStatus());
-        assertEquals("FAILED", updatedOrder.getStatus());
+        assertEquals(PaymentStatus.REJECTED.getValue(), updatedPayment.getStatus());
+        assertEquals(OrderStatus.FAILED.getValue(), updatedOrder.getStatus());
     }
 
     @Test
