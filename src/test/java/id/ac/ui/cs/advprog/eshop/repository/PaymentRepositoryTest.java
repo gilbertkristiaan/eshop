@@ -91,8 +91,9 @@ class PaymentRepositoryTest {
     void testRetrieveAllPayments() {
         for (Payment payment : paymentList) {
             paymentRepository.save(orderInstance, payment);
-        List<Payment> retrievedPayments = paymentRepository.findAll();
-        assertEquals(2, retrievedPayments.size());
+            List<Payment> retrievedPayments = paymentRepository.findAll();
+            assertEquals(2, retrievedPayments.size());
+        }
     }
 
     @Test
