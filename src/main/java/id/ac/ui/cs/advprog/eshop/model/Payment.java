@@ -32,4 +32,12 @@ public class Payment {
         }
         this.status = status;
     }
+
+    public void setPaymentData(Map<String, String> paymentData) {
+        if (paymentData.isEmpty()) {
+            throw new IllegalArgumentException();
+        } else {
+            this.paymentData = paymentData;
+        }
+    }
 }
