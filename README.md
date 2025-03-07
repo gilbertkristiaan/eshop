@@ -3,6 +3,7 @@
 - [Module 1](#Module-1)
 - [Module 2](#Module-2)
 - [Module 3](#Module-3)
+- [Module 4](#Module-4)
 
 ---
 # Module-1
@@ -201,5 +202,35 @@ I implemented Output Data Encoding by using `#strings.escapeXml()` to ensure tha
        - Monolithic classes with multiple responsibilities are harder to understand and maintain
        - Example: If `CarRepository` also handled business logic, it would be harder to modify without breaking other parts of the application. By following SOLID principles, business logic remains in services, while repositories only handle data access.
     
-    
+   
+# Module-4
+
+## Reflection : Refactoring and TDD
+
+1) Reflect based on Percival (2017) proposed self-reflective questions (in “Principles and Best Practice of Testing” submodule, chapter “Evaluating Your Testing Objectives”), whether this TDD flow is useful enough for you or not. If not, explain things that you need to do next time you make more tests.
+   <br><br>
+   TDD flow is highly useful as it provides a structured approach to writing quality code while ensuring correctness, maintainability, and an efficient workflow, as emphasized by Percival (2017).
+   <br><br>
+   TDD ensures that the code meets its requirements and prevents regressions. The red-green-refactor cycle enables incremental development, making it easier to validate functionality at every stage.
+   <br><br>
+   In terms of maintainability, tests serve as living documentation that clarifies the intent of the code. This makes future modifications safer and more manageable, especially in collaborative environments. Additionally, the continuous feedback loop in TDD enhances productivity by breaking down complex tasks into smaller, more manageable steps, allowing for faster issue identification and resolution.
+   <br><br>
+2) You have created unit tests in Tutorial. Now reflect whether your tests have successfully followed F.I.R.S.T. principle or not. If not, explain things that you need to do the next time you create more tests.
+   ## My implementation of the F.I.R.S.T. principles:
+
+   ## Fast
+   My tests follow the "Fast" principle as they utilize Mockito for mocking dependencies, ensuring quick execution. Since they do not rely on external resources, they run efficiently. However, excessive database operations in future tests could slow down execution.
+      
+   ## Isolated/Independent
+   Each test runs independently, with no reliance on the correctness of other tests. The setup and teardown processes ensure that test data remains separate, preventing unintended dependencies between test cases.
+      
+   ## Repeatable
+   By using Mockito, the tests remain consistent and repeatable, as they do not interact with external environments. Since mocks return predefined values, test results remain predictable and unaffected by external changes.
+      
+   ## Self-Validating
+   All tests contain assertions, ensuring automatic validation of outcomes. However, adding more descriptive failure messages could enhance clarity when debugging test failures.
+
+   ## Thorough/Timely
+   The tests cover various scenarios, including both happy and unhappy paths, ensuring robustness. By adhering to the TDD cycle—starting with failing tests (RED), implementing features to make them pass (GREEN), and refining the code (REFACTOR)—I ensure a structured and effective testing approach.
+
 
