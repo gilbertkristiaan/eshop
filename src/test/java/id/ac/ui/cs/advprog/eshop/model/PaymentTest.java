@@ -18,18 +18,18 @@ class PaymentTest {
 
     @Test
     void testPaymentCreationWithDefaultStatus() {
-        Payment payment = new Payment("9a3f7d62-5b1d-4c8e-a2e3-7fbd9e14c6a7", PaymentMethod.VOUCHER.getType(), this.paymentData);
+        Payment payment = new Payment("9a3f7d62-5b1d-4c8e-a2e3-7fbd9e14c6a7", PaymentMethod.VOUCHER.getValue(), this.paymentData);
         assertEquals("9a3f7d62-5b1d-4c8e-a2e3-7fbd9e14c6a7", payment.getId());
-        assertEquals(PaymentMethod.VOUCHER.getType(), payment.getMethod());
+        assertEquals(PaymentMethod.VOUCHER.getValue(), payment.getMethod());
         assertEquals("REJECTED", payment.getStatus());
         assertSame(this.paymentData, payment.getPaymentData());
     }
 
     @Test
     void testPaymentCreationWithSuccessStatus() {
-        Payment payment = new Payment("9a3f7d62-5b1d-4c8e-a2e3-7fbd9e14c6a7", PaymentMethod.VOUCHER.getType(), this.paymentData, "SUCCESS");
+        Payment payment = new Payment("9a3f7d62-5b1d-4c8e-a2e3-7fbd9e14c6a7", PaymentMethod.VOUCHER.getValue(), this.paymentData, "SUCCESS");
         assertEquals("9a3f7d62-5b1d-4c8e-a2e3-7fbd9e14c6a7", payment.getId());
-        assertEquals(PaymentMethod.VOUCHER.getType(), payment.getMethod());
+        assertEquals(PaymentMethod.VOUCHER.getValue(), payment.getMethod());
         assertEquals("SUCCESS", payment.getStatus());
         assertSame(this.paymentData, payment.getPaymentData());
     }
@@ -37,13 +37,13 @@ class PaymentTest {
     @Test
     void testInvalidPaymentStatusThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            Payment payment = new Payment("9a3f7d62-5b1d-4c8e-a2e3-7fbd9e14c6a7", PaymentMethod.VOUCHER.getType(), this.paymentData, "INVALID");
+            Payment payment = new Payment("9a3f7d62-5b1d-4c8e-a2e3-7fbd9e14c6a7", PaymentMethod.VOUCHER.getValue(), this.paymentData, "INVALID");
         });
     }
 
     @Test
     void testEmptyPaymentDataThrowsException() {
-        Payment payment = new Payment("9a3f7d62-5b1d-4c8e-a2e3-7fbd9e14c6a7", PaymentMethod.VOUCHER.getType(), this.paymentData);
+        Payment payment = new Payment("9a3f7d62-5b1d-4c8e-a2e3-7fbd9e14c6a7", PaymentMethod.VOUCHER.getValue(), this.paymentData);
         this.paymentData.clear();
         assertThrows(IllegalArgumentException.class, () -> {
             payment.setPaymentData(this.paymentData);
@@ -52,7 +52,7 @@ class PaymentTest {
 
     @Test
     void testSuccessfulPaymentDataUpdate() {
-        Payment payment = new Payment("9a3f7d62-5b1d-4c8e-a2e3-7fbd9e14c6a7", PaymentMethod.VOUCHER.getType(), this.paymentData);
+        Payment payment = new Payment("9a3f7d62-5b1d-4c8e-a2e3-7fbd9e14c6a7", PaymentMethod.VOUCHER.getValue(), this.paymentData);
         this.paymentData.put("voucherCode", "ESHOP0123ABC4567");
         payment.setPaymentData(this.paymentData);
         assertSame(this.paymentData, payment.getPaymentData());
@@ -60,7 +60,7 @@ class PaymentTest {
 
     @Test
     void testValidVoucher() {
-        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", PaymentMethod.VOUCHER.getType(),
+        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", PaymentMethod.VOUCHER.getValue(),
                 paymentData);
 
         assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
@@ -70,7 +70,7 @@ class PaymentTest {
     void testInvalidPaymentSubFeature() {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("notVoucher", "ISHOP1234ABC5678");
-        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", PaymentMethod.VOUCHER.getType(),
+        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", PaymentMethod.VOUCHER.getValue(),
                 paymentData);
 
         assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
@@ -80,7 +80,7 @@ class PaymentTest {
     void testVoucherLengthInvalid() {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", "1");
-        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", PaymentMethod.VOUCHER.getType(),
+        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", PaymentMethod.VOUCHER.getValue(),
                 paymentData);
 
         assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
@@ -90,7 +90,7 @@ class PaymentTest {
     void testVoucherWrongPrefix() {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", "ISHOP1234ABC5678");
-        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", PaymentMethod.VOUCHER.getType(),
+        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", PaymentMethod.VOUCHER.getValue(),
                 paymentData);
 
         assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
@@ -100,7 +100,7 @@ class PaymentTest {
     void testVoucherMissingNumbers() {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", "ESHOPABCDEFGHIJK");
-        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", PaymentMethod.VOUCHER.getType(),
+        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", PaymentMethod.VOUCHER.getValue(),
                 paymentData);
 
         assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
@@ -110,7 +110,7 @@ class PaymentTest {
     void testVoucherCodeNullValue() {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", null);
-        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", PaymentMethod.VOUCHER.getType(),
+        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", PaymentMethod.VOUCHER.getValue(),
                 paymentData);
 
         assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());

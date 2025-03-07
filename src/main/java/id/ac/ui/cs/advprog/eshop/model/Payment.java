@@ -23,6 +23,14 @@ public class Payment {
         validateData();
     }
 
+    private void setMethod(String method) {
+        if (PaymentMethod.isContain(method)) {
+            this.method = method;
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
     public Payment(String id, String method, Map<String, String> paymentData, String status) {
         this(id, method, paymentData);
         this.setStatus(status);
@@ -33,22 +41,6 @@ public class Payment {
             throw new IllegalArgumentException();
         }
         this.status = status;
-    }
-
-    public void setPaymentData(Map<String, String> paymentData) {
-        if (paymentData.isEmpty()) {
-            throw new IllegalArgumentException();
-        } else {
-            this.paymentData = paymentData;
-        }
-    }
-
-    private void setMethod(String method) {
-        if (PaymentMethod.isContain(method)) {
-            this.method = method;
-        } else {
-            throw new IllegalArgumentException();
-        }
     }
 
     private boolean validateVoucherCode() {
@@ -72,31 +64,22 @@ public class Payment {
         return numericCharCount == 8;
     }
 
-    private boolean validateBankMethod() {
-        String bankName = paymentData.get("bankName");
-        String referenceCode = paymentData.get("referenceCode");
-
-        return bankName != null && !bankName.isEmpty() &&
-                referenceCode != null && !referenceCode.isEmpty();
-    }
-
     private void validateData() {
         boolean isValid = false;
-        switch (this.method) {
-            case "VOUCHER":
-                isValid = validateVoucherCode();
-                break;
-            case "BANK_TRANSFER":
-                isValid = validateBankMethod();
-                break;
-            default:
-                break;
+        if ("VOUCHER".equals(this.method)) {
+            isValid = validateVoucherCode();
+        } else if ("CASH_ON_DELIVERY".equals(this.method)) {
+            isValid = true;
         }
 
-        if (isValid) {
-            status = "SUCCESS";
+        this.status = isValid ? "SUCCESS" : "REJECTED";
+    }
+
+    public void setPaymentData(Map<String, String> paymentData) {
+        if (paymentData.isEmpty()) {
+            throw new IllegalArgumentException();
         } else {
-            status = "REJECTED";
+            this.paymentData = paymentData;
         }
     }
 }
