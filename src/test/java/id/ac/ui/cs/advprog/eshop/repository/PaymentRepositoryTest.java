@@ -2,6 +2,7 @@ package id.ac.ui.cs.advprog.eshop.repository;
 
 import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.model.Order;
+import id.ac.ui.cs.advprog.eshop.model.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,8 +30,14 @@ class PaymentRepositoryTest {
         voucherInfo2.put("voucherCode", "ESHOP5678XYZ1235");
         Payment secondPayment = new Payment("0987abcd-6543-21ef-ba98-fedcba987654", "VOUCHER", voucherInfo2);
         paymentList.add(secondPayment);
+
+        List<Product> productList = new ArrayList<>();
+        Product sampleProduct = new Product();
+
+        productList.add(sampleProduct);
+
         orderInstance = new Order("123e4567-e89b-12d3-a456-426614174000",
-                null, 1708560000L, "User123");
+                productList, 1708560000L, "User123");
     }
 
     @Test
@@ -67,11 +74,12 @@ class PaymentRepositoryTest {
 
     @Test
     void testRetrieveAllPayments() {
-        for (Payment payment : paymentList) {
-            paymentRepository.save(orderInstance, payment);
-            List<Payment> retrievedPayments = paymentRepository.findAll();
-            assertEquals(2, retrievedPayments.size());
-        }
+        paymentRepository.save(orderInstance, paymentList.get(0));
+        List<Payment> retrievedPayments = paymentRepository.findAll();
+        assertEquals(1, retrievedPayments.size());
+        paymentRepository.save(orderInstance, paymentList.get(1));
+        retrievedPayments = paymentRepository.findAll();
+        assertEquals(2, retrievedPayments.size());
     }
 
     @Test
@@ -92,7 +100,11 @@ class PaymentRepositoryTest {
         Payment payment = paymentList.get(0);
         paymentRepository.save(orderInstance, payment);
         Payment retrievedPayment = paymentRepository.findById(paymentList.get(0).getId());
-        Order nonexistentOrder = paymentRepository.getOrder(retrievedPayment.getId());
-        assertNull(nonexistentOrder);
+        Order returnedOrder = paymentRepository.getOrder(retrievedPayment.getId());
+        assertNotNull(returnedOrder);
+        assertEquals(orderInstance.getId(), returnedOrder.getId());
+        assertEquals(orderInstance.getStatus(), returnedOrder.getStatus());
+        assertEquals(orderInstance.getAuthor(), returnedOrder.getAuthor());
+        assertEquals(orderInstance.getOrderTime(), returnedOrder.getOrderTime());
     }
 }

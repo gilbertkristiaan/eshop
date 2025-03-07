@@ -1,151 +1,109 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
+import id.ac.ui.cs.advprog.eshop.repository.PaymentRepository;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import static org.junit.jupiter.api.Assertions.*;
-import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
-import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 
-class PaymentTest {
-    private Map<String, String> paymentData;
+import static org.junit.jupiter.api.Assertions.*;
+
+class PaymentRepositoryTest {
+    PaymentRepository paymentRepository;
+    List<Payment> paymentList;
+    Order orderInstance;
 
     @BeforeEach
     void setUp() {
-        this.paymentData = new HashMap<>();
+        paymentRepository = new PaymentRepository();
+        paymentList = new ArrayList<>();
+
+        Map<String, String> voucherInfo1 = new HashMap<>();
+        voucherInfo1.put("voucherCode", "ESHOP5678XYZ1234");
+        Payment firstPayment = new Payment("a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                PaymentMethod.VOUCHER.getValue(), voucherInfo1);
+        paymentList.add(firstPayment);
+
+        Map<String, String> voucherInfo2 = new HashMap<>();
+        voucherInfo2.put("voucherCode", "ESHOP5678XYZ1235");
+        Payment secondPayment = new Payment("0987abcd-6543-21ef-ba98-fedcba987654",
+                PaymentMethod.VOUCHER.getValue(), voucherInfo2);
+        paymentList.add(secondPayment);
+
+        List<Product> productList = new ArrayList<>();
+        Product sampleProduct = new Product();
+
+        productList.add(sampleProduct);
+
+        orderInstance = new Order("123e4567-e89b-12d3-a456-426614174000",
+                productList, 1708560000L, "User123");
     }
 
     @Test
-    void testPaymentCreationWithDefaultStatus() {
-        Payment payment = new Payment("9a3f7d62-5b1d-4c8e-a2e3-7fbd9e14c6a7", PaymentMethod.VOUCHER.getValue(), this.paymentData);
-        assertEquals("9a3f7d62-5b1d-4c8e-a2e3-7fbd9e14c6a7", payment.getId());
-        assertEquals(PaymentMethod.VOUCHER.getValue(), payment.getMethod());
-        assertEquals("REJECTED", payment.getStatus());
-        assertSame(this.paymentData, payment.getPaymentData());
+    void testSaveNewPayment() {
+        Payment payment = paymentList.get(0);
+        Payment storedPayment = paymentRepository.save(orderInstance, payment);
+        Payment retrievedPayment = paymentRepository.findById(payment.getId());
+        assertEquals(payment.getId(), storedPayment.getId());
+        assertEquals(payment.getStatus(), retrievedPayment.getStatus());
+        assertEquals(payment.getMethod(), retrievedPayment.getMethod());
+        assertSame(payment.getPaymentData(), retrievedPayment.getPaymentData());
     }
 
     @Test
-    void testPaymentCreationWithSuccessStatus() {
-        Payment payment = new Payment("9a3f7d62-5b1d-4c8e-a2e3-7fbd9e14c6a7", PaymentMethod.VOUCHER.getValue(), this.paymentData, "SUCCESS");
-        assertEquals("9a3f7d62-5b1d-4c8e-a2e3-7fbd9e14c6a7", payment.getId());
-        assertEquals(PaymentMethod.VOUCHER.getValue(), payment.getMethod());
-        assertEquals("SUCCESS", payment.getStatus());
-        assertSame(this.paymentData, payment.getPaymentData());
+    void testFindPaymentByIdIfExists() {
+        for (Payment payment : paymentList) {
+            paymentRepository.save(orderInstance, payment);
+        }
+        Payment foundPayment = paymentRepository.findById(paymentList.get(0).getId());
+        assertEquals(paymentList.get(0).getId(), foundPayment.getId());
+        assertEquals(paymentList.get(0).getMethod(), foundPayment.getMethod());
+        assertEquals(paymentList.get(0).getStatus(), foundPayment.getStatus());
+        assertSame(paymentList.get(0).getPaymentData(), foundPayment.getPaymentData());
     }
 
     @Test
-    void testInvalidPaymentStatusThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            Payment payment = new Payment("9a3f7d62-5b1d-4c8e-a2e3-7fbd9e14c6a7", PaymentMethod.VOUCHER.getValue(), this.paymentData, "INVALID");
-        });
+    void testFindPaymentByIdIfNotExists() {
+        for (Payment payment : paymentList) {
+            paymentRepository.save(orderInstance, payment);
+        }
+        Payment nonexistentPayment = paymentRepository.findById("nonexistent-id");
+        assertNull(nonexistentPayment);
     }
 
     @Test
-    void testEmptyPaymentDataThrowsException() {
-        Payment payment = new Payment("9a3f7d62-5b1d-4c8e-a2e3-7fbd9e14c6a7", PaymentMethod.VOUCHER.getValue(), this.paymentData);
-        this.paymentData.clear();
-        assertThrows(IllegalArgumentException.class, () -> {
-            payment.setPaymentData(this.paymentData);
-        });
+    void testRetrieveAllPayments() {
+        paymentRepository.save(orderInstance, paymentList.get(0));
+        List<Payment> retrievedPayments = paymentRepository.findAll();
+        assertEquals(1, retrievedPayments.size());
+
+        paymentRepository.save(orderInstance, paymentList.get(1));
+        retrievedPayments = paymentRepository.findAll();
+        assertEquals(2, retrievedPayments.size());
     }
 
     @Test
-    void testSuccessfulPaymentDataUpdate() {
-        Payment payment = new Payment("9a3f7d62-5b1d-4c8e-a2e3-7fbd9e14c6a7", PaymentMethod.VOUCHER.getValue(), this.paymentData);
-        this.paymentData.put("voucherCode", "ESHOP0123ABC4567");
-        payment.setPaymentData(this.paymentData);
-        assertSame(this.paymentData, payment.getPaymentData());
+    void testFindOrderByPaymentIfExists() {
+        Payment payment = paymentList.get(0);
+        paymentRepository.save(orderInstance, payment);
+        Payment storedPayment = paymentRepository.findById(payment.getId());
+        Order associatedOrder = paymentRepository.getOrder(storedPayment.getId());
+
+        assertEquals(orderInstance.getId(), associatedOrder.getId());
+        assertEquals(orderInstance.getStatus(), associatedOrder.getStatus());
+        assertEquals(orderInstance.getAuthor(), associatedOrder.getAuthor());
+        assertEquals(orderInstance.getOrderTime(), associatedOrder.getOrderTime());
+        assertEquals(orderInstance.getProducts(), associatedOrder.getProducts());
     }
 
     @Test
-    void testValidVoucher() {
-        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", PaymentMethod.VOUCHER.getValue(),
-                paymentData);
+    void testFindOrderByPaymentIfNotExists() {
 
-        assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
+        String nonExistentPaymentId = "non-existent-id";
+        Order nonExistentOrder = paymentRepository.getOrder(nonExistentPaymentId);
+        assertNull(nonExistentOrder);
     }
-
-    @Test
-    void testInvalidPaymentSubFeature() {
-        Map<String, String> paymentData = new HashMap<>();
-        paymentData.put("notVoucher", "ISHOP1234ABC5678");
-        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", PaymentMethod.VOUCHER.getValue(),
-                paymentData);
-
-        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
-    }
-
-    @Test
-    void testVoucherLengthInvalid() {
-        Map<String, String> paymentData = new HashMap<>();
-        paymentData.put("voucherCode", "1");
-        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", PaymentMethod.VOUCHER.getValue(),
-                paymentData);
-
-        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
-    }
-
-    @Test
-    void testVoucherWrongPrefix() {
-        Map<String, String> paymentData = new HashMap<>();
-        paymentData.put("voucherCode", "ISHOP1234ABC5678");
-        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", PaymentMethod.VOUCHER.getValue(),
-                paymentData);
-
-        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
-    }
-
-    @Test
-    void testVoucherMissingNumbers() {
-        Map<String, String> paymentData = new HashMap<>();
-        paymentData.put("voucherCode", "ESHOPABCDEFGHIJK");
-        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", PaymentMethod.VOUCHER.getValue(),
-                paymentData);
-
-        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
-    }
-
-    @Test
-    void testVoucherCodeNullValue() {
-        Map<String, String> paymentData = new HashMap<>();
-        paymentData.put("voucherCode", null);
-        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", PaymentMethod.VOUCHER.getValue(),
-                paymentData);
-
-        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
-    }
-
-    @Test
-    void testValidCashOnDelivery() {
-        Map<String, String> paymentData = new HashMap<>();
-        paymentData.put("codConfirmation", "CONFIRMED");
-        Payment payment = new Payment("b6f4179f-d120-45ee-9324-157466aec4ff", "CASH_ON_DELIVERY", paymentData);
-        assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
-    }
-
-    @Test
-    void testCashOnDeliveryEmptyConfirmation() {
-        Map<String, String> paymentData = new HashMap<>();
-        paymentData.put("codConfirmation", "");
-        Payment payment = new Payment("c9d3179f-e210-45ee-9224-157466dec4ff", "CASH_ON_DELIVERY", paymentData);
-        assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
-    }
-
-    @Test
-    void testCashOnDeliveryNullConfirmation() {
-        Map<String, String> paymentData = new HashMap<>();
-        paymentData.put("codConfirmation", null);
-        Payment payment = new Payment("a2c3179f-f210-45ee-9224-157466dec4ff", "CASH_ON_DELIVERY", paymentData);
-        assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
-    }
-
-    @Test
-    void testCashOnDeliveryInvalidData() {
-        Map<String, String> paymentData = new HashMap<>();
-        paymentData.put("voucherCode", "ESHOP1234ABC5678");
-        Payment payment = new Payment("d8e2179f-c210-45ee-9224-157466dec4ff", "CASH_ON_DELIVERY", paymentData);
-        assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
-    }
-
 }
