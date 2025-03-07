@@ -49,11 +49,9 @@ public class Payment {
         if (voucherCode == null || voucherCode.length() != 16) {
             return false;
         }
-
         if (!voucherCode.startsWith("ESHOP")) {
             return false;
         }
-
         String code = voucherCode.substring(5);
         int numericCharCount = 0;
         for (char character : code.toCharArray()) {
@@ -61,8 +59,15 @@ public class Payment {
                 numericCharCount++;
             }
         }
-
         return numericCharCount == 8;
+    }
+
+    private boolean validateCashOnDelivery() {
+        String address = paymentData.get("address");
+        String deliveryFee = paymentData.get("deliveryFee");
+
+        return address != null && !address.isEmpty()
+                && deliveryFee != null && !deliveryFee.isEmpty();
     }
 
     private void validateData() {
@@ -71,8 +76,7 @@ public class Payment {
         if (paymentMethod == PaymentMethod.VOUCHER) {
             isValid = validateVoucherCode();
         } else if (paymentMethod == PaymentMethod.CASH_ON_DELIVERY) {
-            String codConfirmation = paymentData.get("codConfirmation");
-            isValid = codConfirmation != null && codConfirmation.equals("CONFIRMED");
+            isValid = validateCashOnDelivery();
         }
         this.status = isValid ? PaymentStatus.SUCCESS.getValue() : PaymentStatus.REJECTED.getValue();
     }
@@ -82,6 +86,7 @@ public class Payment {
             throw new IllegalArgumentException();
         } else {
             this.paymentData = paymentData;
+            validateData();  // Re-validate when payment data changes
         }
     }
 }
