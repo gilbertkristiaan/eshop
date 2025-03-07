@@ -1,6 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
 import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import lombok.Getter;
 
 import java.util.Map;
@@ -66,13 +67,13 @@ public class Payment {
 
     private void validateData() {
         boolean isValid = false;
-        if ("VOUCHER".equals(this.method)) {
+        PaymentMethod paymentMethod = PaymentMethod.valueOf(this.method);
+        if (paymentMethod == PaymentMethod.VOUCHER) {
             isValid = validateVoucherCode();
-        } else if ("CASH_ON_DELIVERY".equals(this.method)) {
+        } else if (paymentMethod == PaymentMethod.CASH_ON_DELIVERY) {
             isValid = true;
         }
-
-        this.status = isValid ? "SUCCESS" : "REJECTED";
+        this.status = isValid ? PaymentStatus.SUCCESS.getValue() : PaymentStatus.REJECTED.getValue();
     }
 
     public void setPaymentData(Map<String, String> paymentData) {
