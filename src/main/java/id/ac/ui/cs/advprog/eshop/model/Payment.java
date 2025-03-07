@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import lombok.Getter;
 
 import java.util.Map;
@@ -16,7 +17,7 @@ public class Payment {
             throw new IllegalArgumentException();
         }
         this.id = id;
-        this.method = method;
+        this.setMethod(method);
         this.paymentData = paymentData;
         this.status = "REJECTED";
         validateData();
@@ -39,6 +40,14 @@ public class Payment {
             throw new IllegalArgumentException();
         } else {
             this.paymentData = paymentData;
+        }
+    }
+
+    private void setMethod(String method) {
+        if (PaymentMethod.isContain(method)) {
+            this.method = method;
+        } else {
+            throw new IllegalArgumentException();
         }
     }
 
@@ -90,5 +99,4 @@ public class Payment {
             status = "REJECTED";
         }
     }
-
 }

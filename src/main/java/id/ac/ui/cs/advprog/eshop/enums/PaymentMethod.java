@@ -12,7 +12,7 @@ public enum PaymentMethod {
         this.type = type;
     }
 
-    public static boolean isValid(String input) {
+    public static boolean isContain(String input) {
         for (PaymentMethod method : PaymentMethod.values()) {
             if (method.name().equals(input)) {
                 return true;
