@@ -71,7 +71,8 @@ public class Payment {
         if (paymentMethod == PaymentMethod.VOUCHER) {
             isValid = validateVoucherCode();
         } else if (paymentMethod == PaymentMethod.CASH_ON_DELIVERY) {
-            isValid = true;
+            String codConfirmation = paymentData.get("codConfirmation");
+            isValid = codConfirmation != null && codConfirmation.equals("CONFIRMED");
         }
         this.status = isValid ? PaymentStatus.SUCCESS.getValue() : PaymentStatus.REJECTED.getValue();
     }
