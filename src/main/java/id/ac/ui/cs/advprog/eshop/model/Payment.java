@@ -19,10 +19,7 @@ public class Payment {
         this.method = method;
         this.paymentData = paymentData;
         this.status = "REJECTED";
-
-        if ("VOUCHER".equals(method) && validateVoucherCode()) {
-            this.status = "SUCCESS";
-        }
+        validateData();
     }
 
     public Payment(String id, String method, Map<String, String> paymentData, String status) {
@@ -65,4 +62,33 @@ public class Payment {
 
         return numericCharCount == 8;
     }
+
+    private boolean validateBankMethod() {
+        String bankName = paymentData.get("bankName");
+        String referenceCode = paymentData.get("referenceCode");
+
+        return bankName != null && !bankName.isEmpty() &&
+                referenceCode != null && !referenceCode.isEmpty();
+    }
+
+    private void validateData() {
+        boolean isValid = false;
+        switch (this.method) {
+            case "VOUCHER":
+                isValid = validateVoucherCode();
+                break;
+            case "BANK_TRANSFER":
+                isValid = validateBankMethod();
+                break;
+            default:
+                break;
+        }
+
+        if (isValid) {
+            status = "SUCCESS";
+        } else {
+            status = "REJECTED";
+        }
+    }
+
 }
