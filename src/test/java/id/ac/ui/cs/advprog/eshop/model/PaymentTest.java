@@ -172,4 +172,45 @@ class PaymentTest {
 
         assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
     }
+
+    @Test
+    void testValidCashOnDelivery() {
+        Map<String, String> paymentData = new HashMap<>();
+        paymentData.put("codConfirmation", "CONFIRMED");
+        Payment payment = new Payment("b6f4179f-d120-45ee-9324-157466aec4ff", "CASH_ON_DELIVERY",
+                paymentData);
+
+        assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
+    }
+
+    @Test
+    void testCashOnDeliveryEmptyConfirmation() {
+        Map<String, String> paymentData = new HashMap<>();
+        paymentData.put("codConfirmation", "");
+        Payment payment = new Payment("c9d3179f-e210-45ee-9224-157466dec4ff", "CASH_ON_DELIVERY",
+                paymentData);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
+    }
+
+    @Test
+    void testCashOnDeliveryNullConfirmation() {
+        Map<String, String> paymentData = new HashMap<>();
+        paymentData.put("codConfirmation", null);
+        Payment payment = new Payment("a2c3179f-f210-45ee-9224-157466dec4ff", "CASH_ON_DELIVERY",
+                paymentData);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
+    }
+
+    @Test
+    void testCashOnDeliveryInvalidData() {
+        Map<String, String> paymentData = new HashMap<>();
+        paymentData.put("voucherCode", "ESHOP1234ABC5678");
+        Payment payment = new Payment("d8e2179f-c210-45ee-9224-157466dec4ff", "CASH_ON_DELIVERY",
+                paymentData);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
+    }
+
 }
