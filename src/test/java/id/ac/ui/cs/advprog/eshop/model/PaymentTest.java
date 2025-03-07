@@ -55,4 +55,53 @@ class PaymentTest {
         payment.setPaymentData(this.paymentData);
         assertSame(this.paymentData, payment.getPaymentData());
     }
+
+    @Test
+    void testValidVoucher() {
+        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", "VOUCHER",
+                paymentData);
+
+        assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
+    }
+
+    @Test
+    void testInvalidPaymentSubFeature() {
+        Map<String, String> paymentData = new HashMap<>();
+        paymentData.put("notVoucher", "ISHOP1234ABC5678");
+        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", "VOUCHER",
+                paymentData);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
+    }
+
+    @Test
+    void testVoucherLengthInvalid() {
+        Map<String, String> paymentData = new HashMap<>();
+        paymentData.put("voucherCode", "1");
+        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", "VOUCHER",
+                paymentData);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
+    }
+
+    @Test
+    void testVoucherWrongPrefix() {
+        Map<String, String> paymentData = new HashMap<>();
+        paymentData.put("voucherCode", "ISHOP1234ABC5678");
+        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", "VOUCHER",
+                paymentData);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
+    }
+
+    @Test
+    void testVoucherMissingNumbers() {
+        Map<String, String> paymentData = new HashMap<>();
+        paymentData.put("voucherCode", "ESHOPABCDEFGHIJK");
+        Payment payment = new Payment("f5a1d2c3-b456-789e-0123-456789abcdef", "VOUCHER",
+                paymentData);
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
+    }
+
 }
