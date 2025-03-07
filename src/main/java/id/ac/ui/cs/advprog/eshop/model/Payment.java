@@ -3,7 +3,6 @@ package id.ac.ui.cs.advprog.eshop.model;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import lombok.Getter;
-
 import java.util.Map;
 
 @Getter
@@ -20,7 +19,7 @@ public class Payment {
         this.id = id;
         this.setMethod(method);
         this.paymentData = paymentData;
-        this.status = "REJECTED";
+        this.status = PaymentStatus.REJECTED.getValue();
         validateData();
     }
 
@@ -38,7 +37,7 @@ public class Payment {
     }
 
     public void setStatus(String status) {
-        if (!status.equals("SUCCESS") && !status.equals("REJECTED")) {
+        if (!status.equals(PaymentStatus.SUCCESS.getValue()) && !status.equals(PaymentStatus.REJECTED.getValue())) {
             throw new IllegalArgumentException();
         }
         this.status = status;
@@ -86,7 +85,7 @@ public class Payment {
             throw new IllegalArgumentException();
         } else {
             this.paymentData = paymentData;
-            validateData();  // Re-validate when payment data changes
+            validateData();
         }
     }
 }
